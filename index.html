@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catogram - Share Your Cat Photos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0095f6;
+            --secondary-color: #262626;
+            --light-gray: #dbdbdb;
+            --lightest-gray: #fafafa;
+            --danger-color: #ed4956;
+            --text-color: #262626;
+            --text-secondary: #8e8e8e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--lightest-gray);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: white;
+            border-bottom: 1px solid var(--light-gray);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 10px 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 975px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-item {
+            cursor: pointer;
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .main-container {
+            max-width: 975px;
+            margin: 80px auto 0;
+            display: grid;
+            grid-template-columns: 614px 1fr;
+            gap: 28px;
+            padding: 0 20px;
+        }
+
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .stories {
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            margin-bottom: 12px;
+        }
+
+        .story {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .story-avatar {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .story-avatar img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid white;
+            object-fit: cover;
+        }
+
+        .story-username {
+            font-size: 12px;
+            color: var(--text-color);
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .post {
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+        }
+
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-user-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-more {
+            cursor: pointer;
+        }
+
+        .post-image {
+            width: 100%;
+            max-height: 700px;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .post-actions-left {
+            display: flex;
+            gap: 16px;
+        }
+
+        .post-action {
+            cursor: pointer;
+        }
+
+        .post-action svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .post-likes {
+            padding: 0 16px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .post-caption {
+            padding: 0 16px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .post-caption strong {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .post-comments-link {
+            padding: 0 16px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .post-time {
+            padding: 0 16px 16px;
+            color: var(--text-secondary);
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 90px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 14px;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-username {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .user-name {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .switch-btn {
+            color: var(--primary-color);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .suggestions-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .suggestions-text {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .see-all {
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .suggestion {
+            display: flex;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .suggestion-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+        }
+
+        .suggestion-info {
+            flex: 1;
+        }
+
+        .suggestion-username {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .suggestion-status {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .follow-btn {
+            color: var(--primary-color);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .footer-link {
+            cursor: pointer;
+        }
+
+        .footer-copyright {
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 975px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 475px) {
+            .stories {
+                margin: 0 -20px;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .post {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                margin: 0 -20px 16px;
+            }
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-top: 1px solid var(--light-gray);
+            padding: 10px 0;
+            z-index: 10;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        @media (max-width: 767px) {
+            .mobile-nav {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                margin-bottom: 60px;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 400px;
+            max-width: 90%;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--light-gray);
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-option {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid var(--light-gray);
+            cursor: pointer;
+        }
+
+        .modal-option.danger {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .modal-option:last-child {
+            border-bottom: none;
+        }
+
+        /* Login styles */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 0 20px;
+        }
+
+        .auth-card {
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 1px;
+            padding: 20px 40px;
+            width: 350px;
+        }
+
+        .auth-logo {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin: 22px 0 12px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 24px;
+        }
+
+        .auth-input {
+            background-color: var(--lightest-gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 3px;
+            padding: 9px 8px;
+            font-size: 12px;
+        }
+
+        .auth-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 7px;
+            margin-top: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-or {
+            display: flex;
+            align-items: center;
+            margin: 18px 0;
+        }
+
+        .auth-or::before,
+        .auth-or::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--light-gray);
+        }
+
+        .auth-or-text {
+            margin: 0 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .auth-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #385185;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .auth-forgot {
+            font-size: 12px;
+            color: #385185;
+            text-align: center;
+        }
+
+        .auth-signup {
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 1px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .auth-signup-link {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Profile styles */
+        .profile-header {
+            display: flex;
+            padding: 30px 20px;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 0px;
+            background-color: white;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-right: 100px;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-username {
+            font-size: 28px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-edit-btn {
+            background: transparent;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            padding: 5px 9px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .profile-stat {
+            font-size: 16px;
+        }
+
+        .profile-stat-value {
+            font-weight: 600;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .profile-bio {
+            font-size: 16px;
+        }
+
+        .profile-tabs {
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid var(--light-gray);
+            background-color: white;
+        }
+
+        .profile-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 16px 0;
+            width: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-top: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .profile-tab.active {
+            border-top: 1px solid var(--text-color);
+            color: var(--text-color);
+        }
+
+        .profile-tab svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            background-color: white;
+        }
+
+        .profile-post {
+            position: relative;
+            padding-bottom: 100%;
+            cursor: pointer;
+        }
+
+        .profile-post img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-post-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            color: white;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .profile-post:hover .profile-post-overlay {
+            opacity: 1;
+        }
+
+        .profile-post-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+            }
+
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .profile-username {
+                justify-content: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+        }
+
+        /* Create post styles */
+        .create-post {
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 80px auto 0;
+            overflow: hidden;
+        }
+
+        .create-post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .create-post-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .create-post-share {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .create-post-content {
+            display: flex;
+            height: 500px;
+        }
+
+        .create-post-upload {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            border-right: 1px solid var(--light-gray);
+        }
+
+        .create-post-upload-icon {
+            font-size: 48px;
+            color: var(--text-secondary);
+        }
+
+        .create-post-upload-text {
+            font-size: 22px;
+        }
+
+        .create-post-upload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 7px 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .create-post-details {
+            width: 340px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .create-post-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .create-post-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .create-post-username {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .create-post-textarea {
+            flex: 1;
+            border: none;
+            resize: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .create-post-textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .create-post-counter {
+            text-align: right;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navigation -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Catogram</div>
+            <div class="nav-links">
+                <div class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                </div>
+                <div class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <div class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </div>
+                <div class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <div class="nav-item">
+                    <img src="https://placekitten.com/32/32" alt="User" class="post-user-avatar">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-links">
+            <div class="nav-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+            </div>
+            <div class="nav-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+            <div class="nav-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+            </div>
+            <div class="nav-item">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+            </div>
+            <div class="nav-item">
+                <img src="https://placekitten.com/32/32" alt="User" class="post-user-avatar">
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="feed">
+            <!-- Stories -->
+            <div class="stories">
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/200/200" alt="User">
+                    </div>
+                    <div class="story-username">whiskers</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/201/201" alt="User">
+                    </div>
+                    <div class="story-username">catlovers</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/202/202" alt="User">
+                    </div>
+                    <div class="story-username">meowster</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/203/203" alt="User">
+                    </div>
+                    <div class="story-username">purr.fect</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/204/204" alt="User">
+                    </div>
+                    <div class="story-username">kittylicious</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/205/205" alt="User">
+                    </div>
+                    <div class="story-username">feline.fine</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/206/206" alt="User">
+                    </div>
+                    <div class="story-username">paw.some</div>
+                </div>
+                <div class="story">
+                    <div class="story-avatar">
+                        <img src="https://placekitten.com/207/207" alt="User">
+                    </div>
+                    <div class="story-username">cat.itude</div>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-user">
+                        <img src="https://placekitten.com/100/100" alt="User" class="post-user-avatar">
+                        <div class="post-user-name">whiskers</div>
+                    </div>
+                    <div class="post-more">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <img src="https://placekitten.com/614/614" alt="Post" class="post-image">
+                <div class="post-actions">
+                    <div class="post-actions-left">
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                                               <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                        </div>
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="post-action">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="post-likes">1,234 likes</div>
+                <div class="post-caption">
+                    <strong>whiskers</strong> Just enjoying a sunny day by the window! #catsofcatogram #sunbathing
+                </div>
+                <div class="post-comments-link">View all 42 comments</div>
+                <div class="post-time">2 hours ago</div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-user">
+                        <img src="https://placekitten.com/101/101" alt="User" class="post-user-avatar">
+                        <div class="post-user-name">meowster</div>
+                    </div>
+                    <div class="post-more">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <img src="https://placekitten.com/615/615" alt="Post" class="post-image">
+                <div class="post-actions">
+                    <div class="post-actions-left">
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                        </div>
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="post-action">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="post-likes">2,567 likes</div>
+                <div class="post-caption">
+                    <strong>meowster</strong> I fits, I sits! 😺 #boxlover #catlife
+                </div>
+                <div class="post-comments-link">View all 78 comments</div>
+                <div class="post-time">5 hours ago</div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-user">
+                        <img src="https://placekitten.com/102/102" alt="User" class="post-user-avatar">
+                        <div class="post-user-name">purr.fect</div>
+                    </div>
+                    <div class="post-more">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <img src="https://placekitten.com/616/616" alt="Post" class="post-image">
+                <div class="post-actions">
+                    <div class="post-actions-left">
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                        </div>
+                        <div class="post-action">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="post-action">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="post-likes">3,982 likes</div>
+                <div class="post-caption">
+                    <strong>purr.fect</strong> Friday night vibes with my catnip toy 🎉 #weekendmood #catnip #playtime
+                </div>
+                <div class="post-comments-link">View all 156 comments</div>
+                <div class="post-time">8 hours ago</div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="user-profile">
+                <img src="https://placekitten.com/56/56" alt="User" class="user-avatar">
+                <div class="user-info">
+                    <div class="user-username">your_username</div>
+                    <div class="user-name">Your Full Name</div>
+                </div>
+                <div class="switch-btn">Switch</div>
+            </div>
+
+            <div class="suggestions">
+                <div class="suggestions-header">
+                    <div class="suggestions-text">Suggestions For You</div>
+                    <div class="see-all">See All</div>
+                </div>
+
+                <div class="suggestion">
+                    <img src="https://placekitten.com/32/32" alt="User" class="suggestion-avatar">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">tabby.cat</div>
+                        <div class="suggestion-status">Followed by whiskers + 3 more</div>
+                    </div>
+                    <div class="follow-btn">Follow</div>
+                </div>
+
+                <div class="suggestion">
+                    <img src="https://placekitten.com/33/33" alt="User" class="suggestion-avatar">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">cat.nap</div>
+                        <div class="suggestion-status">New to Catogram</div>
+                    </div>
+                    <div class="follow-btn">Follow</div>
+                </div>
+
+                <div class="suggestion">
+                    <img src="https://placekitten.com/34/34" alt="User" class="suggestion-avatar">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">curious.kitten</div>
+                        <div class="suggestion-status">Follows you</div>
+                    </div>
+                    <div class="follow-btn">Follow</div>
+                </div>
+
+                <div class="suggestion">
+                    <img src="https://placekitten.com/35/35" alt="User" class="suggestion-avatar">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">meow.meow</div>
+                        <div class="suggestion-status">Followed by purr.fect + 8 more</div>
+                    </div>
+                    <div class="follow-btn">Follow</div>
+                </div>
+
+                <div class="suggestion">
+                    <img src="https://placekitten.com/36/36" alt="User" class="suggestion-avatar">
+                    <div class="suggestion-info">
+                        <div class="suggestion-username">feline.diva</div>
+                        <div class="suggestion-status">Suggested for you</div>
+                    </div>
+                    <div class="follow-btn">Follow</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-links">
+                    <span class="footer-link">About</span> •
+                    <span class="footer-link">Help</span> •
+                    <span class="footer-link">Press</span> •
+                    <span class="footer-link">API</span> •
+                    <span class="footer-link">Jobs</span> •
+                    <span class="footer-link">Privacy</span> •
+                    <span class="footer-link">Terms</span> •
+                    <span class="footer-link">Locations</span> •
+                    <span class="footer-link">Language</span>
+                </div>
+                <div class="footer-copyright">© 2023 catogram</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- More Options Modal -->
+    <div class="modal" id="moreOptionsModal">
+        <div class="modal-content">
+            <div class="modal-options">
+                <div class="modal-option danger">Report</div>
+                <div class="modal-option danger">Unfollow</div>
+                <div class="modal-option">Go to post</div>
+                <div class="modal-option">Share to...</div>
+                <div class="modal-option">Copy link</div>
+                <div class="modal-option">Embed</div>
+                <div class="modal-option" id="cancelOption">Cancel</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page (Hidden by default, toggle with JavaScript) -->
+    <div style="display: none;">
+        <div class="profile-header">
+            <img src="https://placekitten.com/150/150" alt="Profile" class="profile-avatar">
+            <div class="profile-info">
+                <div class="profile-username">
+                    whiskers
+                    <button class="profile-edit-btn">Edit Profile</button>
+                </div>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <span class="profile-stat-value">42</span> posts
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-value">1,234</span> followers
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-value">567</span> following
+                    </div>
+                </div>
+                <div class="profile-name">Mr. Whiskers</div>
+                <div class="profile-bio">Professional napper 😴 | Food critic 🍣 | Window watcher 👀 | Follow for daily cat content!</div>
+            </div>
+        </div>
+        <div class="profile-tabs">
+            <div class="profile-tab active">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                </svg> POSTS
+            </div>
+            <div class="profile-tab">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg> SAVED
+            </div>
+            <div class="profile-tab">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg> TAGGED
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-post">
+                <img src="https://placekitten.com/300/300" alt="Post">
+                <div class="profile-post-overlay">
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4
+                            0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg> 128
+                    </div>
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                        </svg> 24
+                    </div>
+                </div>
+            </div>
+            <div class="profile-post">
+                <img src="https://placekitten.com/301/301" alt="Post">
+                <div class="profile-post-overlay">
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg> 236
+                    </div>
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                        </svg> 42
+                    </div>
+                </div>
+            </div>
+            <div class="profile-post">
+                <img src="https://placekitten.com/302/302" alt="Post">
+                <div class="profile-post-overlay">
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg> 521
+                    </div>
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                        </svg> 68
+                    </div>
+                </div>
+            </div>
+            <div class="profile-post">
+                <img src="https://placekitten.com/303/303" alt="Post">
+                <div class="profile-post-overlay">
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg> 341
+                    </div>
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                        </svg> 53
+                    </div>
+                </div>
+            </div>
+            <div class="profile-post">
+                <img src="https://placekitten.com/304/304" alt="Post">
+                <div class="profile-post-overlay">
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg> 412
+                    </div>
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                        </svg> 61
+                    </div>
+                </div>
+            </div>
+            <div class="profile-post">
+                <img src="https://placekitten.com/305/305" alt="Post">
+                <div class="profile-post-overlay">
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg> 287
+                    </div>
+                    <div class="profile-post-stat">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                        </svg> 47
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Page (Hidden by default, toggle with JavaScript) -->
+    <div style="display: none;">
+        <div class="create-post">
+            <div class="create-post-header">
+                <div class="create-post-title">Create New Post</div>
+                <div class="create-post-share">Share</div>
+            </div>
+            <div class="create-post-content">
+                <div class="create-post-upload">
+                    <div class="create-post-upload-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="96" height="96">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2                            0 002-2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="create-post-upload-text">Drag photos and videos here</div>
+                    <button class="create-post-upload-btn">Select from computer</button>
+                </div>
+                <div class="create-post-details">
+                    <div class="create-post-user">
+                        <img src="https://placekitten.com/28/28" alt="User" class="create-post-avatar">
+                        <div class="create-post-username">your_username</div>
+                    </div>
+                    <textarea class="create-post-textarea" placeholder="Write a caption..." maxlength="2200"></textarea>
+                    <div class="create-post-counter">0/2,200</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page (Hidden by default, toggle with JavaScript) -->
+    <div style="display: none;">
+        <div class="auth-container">
+            <div>
+                <div class="auth-card">
+                    <div class="auth-logo">Catogram</div>
+                    <form class="auth-form">
+                        <input type="text" class="auth-input" placeholder="Phone number, username, or email">
+                        <input type="password" class="auth-input" placeholder="Password">
+                        <button class="auth-btn">Log In</button>
+                    </form>
+                    <div class="auth-or">
+                        <span class="auth-or-text">OR</span>
+                    </div>
+                    <div class="auth-social">
+                        <svg fill="currentColor" viewBox="0 0 20 20" width="16" height="16">
+                            <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0110 4.799c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.378.203 2.397.1 2.65.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C17.137 18.163 20 14.418 20 10c0-5.523-4.477-10-10-10z" clip-rule="evenodd"></path>
+                        </svg>
+                        Log in with Facebook
+                    </div>
+                    <div class="auth-forgot">Forgot password?</div>
+                </div>
+                <div class="auth-signup">
+                    Don't have an account? <span class="auth-signup-link">Sign up</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Page (Hidden by default, toggle with JavaScript) -->
+    <div style="display: none;">
+        <div class="main-container" style="margin-top: 80px;">
+            <div style="max-width: 600px; margin: 0 auto;">
+                <div style="background-color: white; border: 1px solid var(--light-gray); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+                    <div style="position: relative;">
+                        <input type="text" placeholder="Search" style="width: 100%; padding: 8px 40px; border: 1px solid var(--light-gray); border-radius: 8px; background-color: var(--lightest-gray);">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: var(--text-secondary);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="background-color: white; border: 1px solid var(--light-gray); border-radius: 8px; padding: 16px;">
+                    <div style="font-weight: 600; font-size: 16px; margin-bottom: 16px;">Recent</div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <img src="https://placekitten.com/40/40" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">whiskers</div>
+                                <div style="color: var(--text-secondary); font-size: 12px;">Mr. Whiskers • Following</div>
+                            </div>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 12px; cursor: pointer;">✕</div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <img src="https://placekitten.com/41/41" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">meowster</div>
+                                <div style="color: var(--text-secondary); font-size: 12px;">King Meowster • Following</div>
+                            </div>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 12px; cursor: pointer;">✕</div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--lightest-gray); display: flex; align-items: center; justify-content: center;">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: var(--text-secondary);">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">#catsofcatogram</div>
+                                <div style="color: var(--text-secondary); font-size: 12px;">Hashtag • 1.2M posts</div>
+                            </div>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 12px; cursor: pointer;">✕</div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--lightest-gray); display: flex; align-items: center; justify-content: center;">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px; color: var(--text-secondary);">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">#catnap</div>
+                                <div style="color: var(--text-secondary); font-size: 12px;">Hashtag • 567K posts</div>
+                            </div>
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 12px; cursor: pointer;">✕</div>
+                    </div>
+                    
+                    <div style="text-align: center; color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer;">
+                        Clear All
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Page (Hidden by default, toggle with JavaScript) -->
+    <div style="display: none;">
+        <div class="main-container" style="margin-top: 80px;">
+            <div style="max-width: 600px; margin: 0 auto;">
+                <div style="background-color: white; border: 1px solid var(--light-gray); border-radius: 8px; padding: 16px;">
+                    <div style="font-weight: 600; font-size: 16px; margin-bottom: 16px;">Notifications</div>
+                    
+                    <div style="font-weight: 600; font-size: 14px; margin-bottom: 16px;">Today</div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="https://placekitten.com/40/40" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="flex: 1; font-size: 14px;">
+                            <span style="font-weight: 600;">whiskers</span> liked your photo. <span style="color: var(--text-secondary);">2h</span>
+                        </div>
+                        <img src="https://placekitten.com/50/50" alt="Post" style="width: 40px; height: 40px; object-fit: cover;">
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="https://placekitten.com/41/41" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="flex: 1; font-size: 14px;">
+                            <span style="font-weight: 600;">meowster</span> and <span style="font-weight: 600;">3 others</span> liked your photo. <span style="color: var(--text-secondary);">5h</span>
+                        </div>
+                        <img src="https://placekitten.com/51/51" alt="Post" style="width: 40px; height: 40px; object-fit: cover;">
+                    </div>
+                    
+                    <div style="font-weight: 600; font-size: 14px; margin: 20px 0 16px;">This Week</div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="https://placekitten.com/42/42" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="flex: 1; font-size: 14px;">
+                            <span style="font-weight: 600;">purr.fect</span> started following you. <span style="color: var(--text-secondary);">2d</span>
+                        </div>
+                        <button style="background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 5px 10px; font-weight: 600; font-size: 12px;">Follow</button>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="https://placekitten.com/43/43" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="flex: 1; font-size: 14px;">
+                            <span style="font-weight: 600;">cat.nap</span> mentioned you in a comment: <span style="font-weight: 400;">@your_username so cute! 😻</span> <span style="color: var(--text-secondary);">3d</span>
+                        </div>
+                        <img src="https://placekitten.com/52/52" alt="Post" style="width: 40px; height: 40px; object-fit: cover;">
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="https://placekitten.com/44/44" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="flex: 1; font-size: 14px;">
+                            <span style="font-weight: 600;">curious.kitten</span> commented on your photo: <span style="font-weight: 400;">This is amazing!</span> <span style="color: var(--text-secondary);">5d</span>
+                        </div>
+                        <img src="https://placekitten.com/53/53" alt="Post" style="width: 40px; height: 40px; object-fit: cover;">
+                    </div>
+                    
+                    <div style="font-weight: 600; font-size: 14px; margin: 20px 0 16px;">This Month</div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="https://placekitten.com/45/45" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="flex: 1; font-size: 14px;">
+                            <span style="font-weight: 600;">feline.diva</span> liked your comment: <span style="font-weight: 400;">Thank you!</span> <span style="color: var(--text-secondary);">3w</span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <img src="https://placekitten.com/46/46" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <div style="flex: 1; font-size: 14px;">
+                            <span style="font-weight: 600;">meow.meow</span> and <span style="font-weight: 600;">12 others</span> liked your photo. <span style="color: var(--text-secondary);">3w</span>
+                        </div>
+                        <img src="https://placekitten.com/54/54" alt="Post" style="width: 40px; height: 40px; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        // Post more options modal
+        const moreButtons = document.querySelectorAll('.post-more');
+        const moreOptionsModal = document.getElementById('moreOptionsModal');
+        const cancelOption = document.getElementById('cancelOption');
+
+        moreButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                moreOptionsModal.classList.add('show');
+            });
+        });
+
+        cancelOption.addEventListener('click', () => {
+            moreOptionsModal.classList.remove('show');
+        });
+
+        moreOptionsModal.addEventListener('click', (e) => {
+            if (e.target === moreOptionsModal) {
+                moreOptionsModal.classList.remove('show');
+            }
+        });
+
+        // Like functionality
+        const likeButtons = document.querySelectorAll('.post-action:first-child');
+        
+        likeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const svg = button.querySelector('svg');
+                const isLiked = svg.getAttribute('fill') === 'currentColor';
+                
+                if (isLiked) {
+                    svg.setAttribute('fill', 'none');
+                    svg.setAttribute('stroke', 'currentColor');
+                } else {
+                    svg.setAttribute('fill', 'currentColor');
+                    svg.setAttribute('stroke', 'none');
+                }
+            });
+        });
+
+        // Textarea character counter
+        const textarea = document.querySelector('.create-post-textarea');
+        const counter = document.querySelector('.create-post-counter');
+        
+        if (textarea && counter) {
+            textarea.addEventListener('input', () => {
+                const count = textarea.value.length;
+                counter.textContent = `${count}/2,200`;
+            });
+        }
+    </script>
+</body>
+</html>
